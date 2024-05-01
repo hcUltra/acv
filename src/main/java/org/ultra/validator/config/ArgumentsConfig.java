@@ -5,6 +5,7 @@ import org.ultra.validator.main.Solution;
 import org.ultra.validator.range.Range;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,9 +21,11 @@ public class ArgumentsConfig {
     private String question;
     private int testTimes;
     private List<ArgumentConfig> argumentConfigs;
+    private final List<String> constrains;
 
-    public ArgumentsConfig(List<ArgumentConfig> pc, List<String> d) {
-        argumentConfigs = pc;
+    public ArgumentsConfig(List<ArgumentConfig> ac, List<String> constrains) {
+        argumentConfigs = ac;
+        this.constrains = constrains;
     }
 
     @Override

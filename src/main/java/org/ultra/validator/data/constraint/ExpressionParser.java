@@ -1,5 +1,6 @@
 package org.ultra.validator.data.constraint;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -61,33 +62,20 @@ public class ExpressionParser {
 
     public static void main(String[] args) {
         Map<AcvObj, Range> map = new HashMap<>();
-        String ms = "acv[0][0][0].size == 1000";
-        Node node1 = parseExpression(ms);
-        if (node1 != null) {
-            map.put(node1.acvObj, node1.range);
-        }
-        String ns = "0 <= acv[1][0][0].size <= 1000";
-        Node node2 = parseExpression(ns);
-        if (node2 != null) {
-            map.put(node2.acvObj, node2.range);
-        }
-        String mv = "-10000000 <= acv[0][1][0].value <= 10000000";
-        Node node3 = parseExpression(mv);
-        if (node3 != null) {
-            map.put(node3.acvObj, node3.range);
-        }
-        String nv = "-10000000 <= acv[1][1][0].value <= 10000000";
-        Node node4 = parseExpression(nv);
-        if (node4 != null) {
-            map.put(node4.acvObj, node4.range);
-        }
-        String mnc = "1 <= acv[0][0][0].size + acv[1][0][0].size <= 2000";
-        Node node5 = parseExpression(mnc);
-        if (node5 != null) {
-            map.put(node5.acvObj, node5.range);
-        } else {
-            // 计算表达式的真值
+        ArrayList<String> constrains = new ArrayList<>();
+        constrains.add("acv[0][0][0].size == 1000");
+        constrains.add("0 <= acv[1][0][0].size <= 1000");
+        constrains.add("-10000000 <= acv[0][1][0].value <= 10000000");
+        constrains.add("-10000000 <= acv[1][1][0].value <= 10000000");
+        constrains.add("1 <= acv[0][0][0].size + acv[1][0][0].size <= 2000");
 
+        for (String constraint : constrains) {
+            Node node = parseExpression(constraint);
+            if (node != null) {
+                map.put(node.acvObj, node.range);
+            } else {
+                // 需要计算的表达式
+            }
         }
 
         map.forEach((key, value) -> System.out.println(key + ": " + value));
