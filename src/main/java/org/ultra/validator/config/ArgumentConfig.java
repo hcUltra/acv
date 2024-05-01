@@ -34,7 +34,7 @@ public class ArgumentConfig {
     // for parse
     private Type type;
     // 数据元素的取值范围
-    private Range valueRange = null;
+    private Range value = null;
     // 数据集合大小
     private Range size = null;
     // 针对String做出的适配  字符有哪些字符构成
@@ -77,8 +77,8 @@ public class ArgumentConfig {
         return this;
     }
 
-    public ArgumentConfig withValueRange(Range valueRange) {
-        this.valueRange = valueRange;
+    public ArgumentConfig withValue(Range valueRange) {
+        this.value = valueRange;
         return this;
     }
 

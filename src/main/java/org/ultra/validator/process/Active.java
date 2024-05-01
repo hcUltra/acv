@@ -6,6 +6,7 @@ import org.ultra.validator.annotation.Validator;
 import org.ultra.validator.common.util.ReflectUtil;
 import org.ultra.validator.config.ArgumentsConfig;
 import org.ultra.validator.core.parse.Parser;
+import org.ultra.validator.data.constraint.ExpressionParser;
 import org.ultra.validator.exception.UnableResolveTypeException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -28,8 +29,10 @@ public class Active {
             argumentsConfig.setTestTimes(configAnnotation.count());
             argumentsConfig.setValidatorMethod(ReflectUtil.reflectValidatorAnnotationMethod());
             argumentsConfig.setCorrectMethod(ReflectUtil.reflectCorretAnnotationMethod());
-            // 收集参数信息 并对其进行扁平化处理
+            // 收集参数信息 并对其进行扁平化处理 设置模板
             Parser.preParser(argumentsConfig);
+            // 初始化约束
+            ExpressionParser.initConstraints(argumentsConfig);
             // 启动验证过程
             boolean result = verifyArguments(argumentsConfig);
             // 记录验证结果日志

@@ -1,6 +1,7 @@
 package org.ultra.validator.asm;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.ultra.validator.common.constant.CompileConstant;
 import org.ultra.validator.common.util.FileUtil;
 import org.ultra.validator.common.util.CommandUtil;
@@ -32,6 +33,7 @@ public class GenerateDump {
         if (!r) {
             // 创建失败
             log.error("创建新 SolutionDump.java 文件失败");
+            return;
         }
         // 向字节码文件写入流
         StringBuilder solutionDumpClassStr = new StringBuilder();
@@ -46,10 +48,13 @@ public class GenerateDump {
     }
 
 
-
     private static void createRtJar() throws IOException {
         File file = new File(CompileConstant.RT_JAR_PATH);
-        file.createNewFile();
+        boolean ret = file.createNewFile();
+        if (!ret) {
+            log.error("创建 rt.jar 文件失败");
+            return;
+        }
         File rt = new File(CompileConstant.JAVA_HOME_JRE + "/lib/rt.jar");
         byte[] bytes = Files.readAllBytes(rt.toPath());
         FileUtil.writeFile(CompileConstant.RT_JAR_PATH, bytes);
@@ -60,7 +65,11 @@ public class GenerateDump {
         // 创建 tmp 目录
         File file = new File(CompileConstant.WORK_DIR);
         if (!file.exists()) {
-            file.mkdirs();
+            boolean ret = file.mkdirs();
+            if (!ret) {
+                log.error("创建 tmp 目录失败");
+                return null;
+            }
         }
         String javacCommand = CompileConstant.JAVA_HOME_JRE.substring(0, CompileConstant.JAVA_HOME_JRE.length() - 3);
         javacCommand += "bin/javac";
@@ -84,7 +93,12 @@ public class GenerateDump {
         File byteCodeFile = new File(CompileConstant.SOLUTION_DUMP_CLASS_PATH);
         InputStream is = Files.newInputStream(byteCodeFile.toPath());
         byte[] bytes = new byte[(int) byteCodeFile.length()];
-        is.read(bytes);
+        int n = is.read(bytes);
+        if(n < 0) {
+            log.error("获取字节流失败");
+            return null;
+        }
+        is.close();
         return bytes;
     }
 

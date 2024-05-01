@@ -4,7 +4,6 @@ import org.ultra.validator.common.map.AddressMap;
 import org.ultra.validator.config.ArgumentConfig;
 import org.ultra.validator.range.Range;
 
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,7 @@ public class BasicTypeFactory {
     private final String allowedCharacters;
 
     public BasicTypeFactory(ArgumentConfig config) {
-        this.valueRange = config.getValueRange();
+        this.valueRange = config.getValue();
         this.allowedCharacters = config.getAllowedCharacters();
     }
 

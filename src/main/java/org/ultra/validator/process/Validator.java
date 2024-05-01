@@ -31,6 +31,8 @@ public class Validator {
         long validatorTakeTime = 0;
         long correctTakeTime = 0;
         for (int i = 0; i < config.getTestTimes(); i++) {
+            // TODO 设置本次随机的各集合的 size
+
             Object[][] test = RandomArgumentConstructor.constructDispatcher(config);
             long startValidatorTime = System.currentTimeMillis();
             Object result1 = ReflectUtil.invoke(config.getValidatorMethod(), test[0]);

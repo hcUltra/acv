@@ -18,13 +18,13 @@ public class ArgumentsConfig {
     private Method validatorMethod = null;
     private Method correctMethod = null;
     public static Class<?> clazz = Solution.class;
-    private String question;
     private int testTimes;
     private List<ArgumentConfig> argumentConfigs;
     private final List<String> constrains;
+    private List<String> evaluatorConstraints = new ArrayList<>();
 
-    public ArgumentsConfig(List<ArgumentConfig> ac, List<String> constrains) {
-        argumentConfigs = ac;
+    public ArgumentsConfig(List<String> constrains) {
+        argumentConfigs = new ArrayList<>();
         this.constrains = constrains;
     }
 

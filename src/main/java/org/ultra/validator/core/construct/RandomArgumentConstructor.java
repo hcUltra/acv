@@ -19,6 +19,7 @@ import java.util.*;
  * @description TODO 将生成的组数抽象出来，以便加入多组对照样本
  * @date 2024/4/23 18:39
  **/
+@SuppressWarnings("all")
 public class RandomArgumentConstructor {
     // 根据参数配置 ArgumentsConfig 生成随机参数
     // 返回两组随机参数 args0 ... argsN
