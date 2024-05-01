@@ -53,7 +53,7 @@ public class ExpressionParser {
             Pairs pairs = new Pairs(i, j, k);
 
             if (attribute.equals("size") || attribute.equals("value")) {
-                Range range = new Range(lowerBound, upperBound);
+                Range range = new Range(attribute, lowerBound, upperBound);
                 return new Node(pairs, range);
             } else {
                 return null;
@@ -65,7 +65,7 @@ public class ExpressionParser {
     public static void main(String[] args) {
         Map<Pairs, Range> map = new HashMap<>();
         ArrayList<String> constrains = new ArrayList<>();
-        constrains.add("acv[0][0][0].size == 1000");
+        constrains.add("0 <= acv[0][0][0].size <= 1000");
         constrains.add("0 <= acv[1][0][0].size <= 1000");
         constrains.add("-10000000 <= acv[0][1][0].value <= 10000000");
         constrains.add("-10000000 <= acv[1][1][0].value <= 10000000");
@@ -79,7 +79,6 @@ public class ExpressionParser {
                 // 需要计算的表达式
             }
         }
-
         map.forEach((key, value) -> System.out.println(key + ": " + value));
     }
 }

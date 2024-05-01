@@ -11,9 +11,17 @@ import lombok.Data;
 public class Range {
     public static final Range initial = new Range(0, 1);
 
+    private String property;
+
     private double min;
 
     private double max;
+
+    public Range(String property, double min, double max) {
+        this.property = property;
+        this.min = min;
+        this.max = max;
+    }
 
     public Range(double min, double max) {
         this.min = min;
@@ -42,5 +50,14 @@ public class Range {
 
     public static double getNumberMinToMax(Range range) {
         return getNumberMinToMax(range.getMin(), range.getMax());
+    }
+
+    @Override
+    public String toString() {
+        return "Range{" +
+                property + '(' +
+                "min=" + min +
+                ", max=" + max +
+                ")}";
     }
 }
