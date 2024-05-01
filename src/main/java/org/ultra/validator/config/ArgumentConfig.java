@@ -13,6 +13,8 @@ import java.util.List;
  */
 @Data
 public class ArgumentConfig {
+    // 递归
+    private ArgumentConfig[] innerConfig;
 
     private Integer iThArgument = 0;    // 第个参数 只有根才有该属性                 i
     private Integer depth = 0;          // 深度                                   j
@@ -22,9 +24,8 @@ public class ArgumentConfig {
     public int maxJ;
     public int maxK;
 
+    Integer fixSize = -1;// 针对某一次测试的大小
 
-    // 递归
-    private ArgumentConfig[] innerConfig;
     // 参数名称 - 主要用于解决参数之间的依赖关系如 a.length < b.length
     private String name = null;
     // 全限定类型 or 数组签名 配合 ArgumentType 使用

@@ -31,39 +31,39 @@ public class ExpressionParser {
     }
 
     public static Node parseExpression(String input) {
-        // 匹配范围和固定值，包括size和value属性，支持负数
-        String patternStr = "(-?\\d+)\\s*<=\\s*acv\\[(\\d+)\\]\\[(\\d+)\\]\\[(\\d+)\\]\\.(size|value)\\s*<=\\s*(-?\\d+)|" +
-                "acv\\[(\\d+)\\]\\[(\\d+)\\]\\[(\\d+)\\]\\.(size|value)\\s*==\\s*(-?\\d+)";
+        String patternStr = "(-?\\d+)\\s*<=\\s*((acv\\d{3}\\.(size|value)(\\s*\\+\\s*acv\\d{3}\\.(size|value))*)|acv\\d{3}\\.(size|value))\\s*<=\\s*(-?\\d+)|acv(\\d{3})\\.(size|value)\\s*==\\s*(-?\\d+)";
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
-            int i, j, k;
-            String attribute;
-            int lowerBound, upperBound, fixedValue;
-            if (matcher.group(5) != null) {
-                // Range expression
-                lowerBound = Integer.parseInt(matcher.group(1));
-                i = Integer.parseInt(matcher.group(2));
-                j = Integer.parseInt(matcher.group(3));
-                k = Integer.parseInt(matcher.group(4));
-                attribute = matcher.group(5);
-                upperBound = Integer.parseInt(matcher.group(6));
-            } else {
-                // Equality expression
-                i = Integer.parseInt(matcher.group(7));
-                j = Integer.parseInt(matcher.group(8));
-                k = Integer.parseInt(matcher.group(9));
-                attribute = matcher.group(10);
-                fixedValue = Integer.parseInt(matcher.group(11));
-                lowerBound = upperBound = fixedValue;
-            }
+            if (matcher.group(2) != null) { // This handles both range and addition expressions
+                int lowerBound = Integer.parseInt(matcher.group(1));
+                String expression = matcher.group(2);
+                int upperBound = Integer.parseInt(matcher.group(8));
 
-            Pairs pairs = new Pairs(i, j, k);
-            if (attribute.equals("size") || attribute.equals("value")) {
-                Range range = new Range(attribute, lowerBound, upperBound);
+                // Extracting multiple acv references from the expression
+                Pattern acvPattern = Pattern.compile("(acv(\\d{3})\\.(size|value))");
+                Matcher acvMatcher = acvPattern.matcher(expression);
+                while (acvMatcher.find()) {
+                    String attribute = acvMatcher.group(3);
+                    int index = Integer.parseInt(acvMatcher.group(2));
+                    int i = index / 100; // Assuming `i`, `j`, `k` are derived like this
+                    int j = (index / 10) % 10;
+                    int k = index % 10;
+                    Pairs pairs = new Pairs(i, j, k);
+                    Range range = new Range(attribute, lowerBound, upperBound);
+                    return new Node(pairs, range); // This needs to be handled if multiple acv references exist
+                }
+            } else if (matcher.group(10) != null) {
+                // Equality expression
+                String attribute = matcher.group(12);
+                int fixedValue = Integer.parseInt(matcher.group(13));
+                int index = Integer.parseInt(matcher.group(11));
+                int i = index / 100;
+                int j = (index / 10) % 10;
+                int k = index % 10;
+                Pairs pairs = new Pairs(i, j, k);
+                Range range = new Range(attribute, fixedValue, fixedValue);
                 return new Node(pairs, range);
-            } else {
-                return null;
             }
         }
         return null;
@@ -77,7 +77,10 @@ public class ExpressionParser {
                 Pairs pairs = node.pairs;
                 Range range = node.range;
                 ArgumentConfig ac = Parser.flatteningMap.get(pairs);
-                if ("size".equals(range.getProperty())) {
+                if (constraint.contains("+")) {
+                    // 需要计算的表达式，加入 argumentsConfig
+                    argumentsConfig.getEvaluatorConstraints().add(constraint);
+                } else if ("size".equals(range.getProperty())) {
                     ac.setSize(range);
                 } else if ("value".equals(range.getProperty())) {
                     ac.setValue(range);
@@ -95,11 +98,11 @@ public class ExpressionParser {
     public static void main(String[] args) {
         Map<Pairs, Range> map = new HashMap<>();
         ArrayList<String> constrains = new ArrayList<>();
-        constrains.add("0 <= acv[0][0][0].size <= 1000");
-        constrains.add("0 <= acv[1][0][0].size <= 1000");
-        constrains.add("-10000000 <= acv[0][1][0].value <= 10000000");
-        constrains.add("-10000000 <= acv[1][1][0].value <= 10000000");
-        constrains.add("1 <= acv[0][0][0].size + acv[1][0][0].size <= 2000");
+        constrains.add("0 <= acv000.size <= 1000");
+        constrains.add("0 <= acv100.size <= 1000");
+        constrains.add("-10000000 <= acv010.value <= 10000000");
+        constrains.add("-10000000 <= acv110.value <= 10000000");
+        constrains.add("1 <= acv000.size + acv100.size <= 2000");
 
         for (String constraint : constrains) {
             Node node = parseExpression(constraint);

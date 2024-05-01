@@ -80,7 +80,7 @@ public class RandomArgumentConstructor {
 
     public static Object[] constructArrayObj(ArgumentConfig config) throws UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         Object[] arrays = new Object[2];
-        int size = (int) Range.getNumberMinToMax(config.getSize());
+        int size = config.getFixSize() == -1 ? (int)Range.getNumberMinToMax(config.getSize()) : config.getFixSize();
         if (size < 0) {
             return null;
         }
@@ -107,7 +107,7 @@ public class RandomArgumentConstructor {
 
     public static Object[] constructCollectionObj(ArgumentConfig config) throws UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Object[] collections = new Object[2];
-        int size = (int) Range.getNumberMinToMax(config.getSize());
+        int size = config.getFixSize() == -1 ? (int)Range.getNumberMinToMax(config.getSize()) : config.getFixSize();
         if (size < 0) {
             return null;
         }
@@ -144,7 +144,7 @@ public class RandomArgumentConstructor {
 
     public static Object[] constructMapObj(ArgumentConfig config) throws UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Object[] maps = new Object[2];
-        int size = (int) Range.getNumberMinToMax(config.getSize());
+        int size = config.getFixSize() == -1 ? (int)Range.getNumberMinToMax(config.getSize()) : config.getFixSize();
         if (size < 0) {
             return null;
         }

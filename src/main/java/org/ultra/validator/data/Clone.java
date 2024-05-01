@@ -1,4 +1,4 @@
-package org.ultra.validator. data;
+package org.ultra.validator.data;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -9,9 +9,10 @@ import java.lang.reflect.Type;
 
 /**
  * @author yinger
- * @description TODO
+ * @description
  * @date 2024/1/1
  **/
+@SuppressWarnings("all")
 public class Clone {
     private static volatile Clone clone = null;
 

@@ -5,10 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.ultra.validator.annotation.Validator;
 import org.ultra.validator.common.util.ReflectUtil;
 import org.ultra.validator.config.ArgumentsConfig;
+import org.ultra.validator.config.Collation;
 import org.ultra.validator.core.parse.Parser;
 import org.ultra.validator.data.constraint.ExpressionParser;
 import org.ultra.validator.exception.UnableResolveTypeException;
 
+import javax.script.ScriptException;
 import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
@@ -33,6 +35,8 @@ public class Active {
             Parser.preParser(argumentsConfig);
             // 初始化约束
             ExpressionParser.initConstraints(argumentsConfig);
+//            argumentsConfig.getArgumentConfigs().get(0).setCollation(new Collation());
+//            argumentsConfig.getArgumentConfigs().get(1).setCollation(new Collation());
             // 启动验证过程
             boolean result = verifyArguments(argumentsConfig);
             // 记录验证结果日志
@@ -46,7 +50,7 @@ public class Active {
         }
     }
 
-    private boolean verifyArguments(ArgumentsConfig argumentsConfig) throws JsonProcessingException, UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    private boolean verifyArguments(ArgumentsConfig argumentsConfig) throws JsonProcessingException, UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, ScriptException {
         return new org.ultra.validator.process.Validator().verification(argumentsConfig);
     }
 }
