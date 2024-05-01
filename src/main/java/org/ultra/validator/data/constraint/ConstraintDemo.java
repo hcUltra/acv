@@ -10,6 +10,10 @@ public class ConstraintDemo {
     public static void main(String[] args) {
         // 准备测试数据
         Map<String, Object> variables = new HashMap<>();
+        variables.put("m",500);
+        variables.put("n",1500);
+
+
         // 定义约束
         String expression1 = "0 <= m <= 1000";
         String expression2 = "0 <= n <= 1000";

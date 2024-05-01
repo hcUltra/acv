@@ -22,12 +22,17 @@ public class Pairs {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Pairs pairs = (Pairs) o;
-        return i == pairs.i && j == pairs.j && k == pairs.k;
+        Pairs acvObj = (Pairs) o;
+        return i == acvObj.i && j == acvObj.j && k == acvObj.k;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(i, j, k);
+    }
+
+    @Override
+    public String toString() {
+        return "acv[" + i + "][" + j + "][" + k + "]";
     }
 }

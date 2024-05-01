@@ -1,5 +1,8 @@
 package org.ultra.validator.data.constraint;
 
+import org.ultra.validator.config.Pairs;
+import org.ultra.validator.range.Range;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,27 +11,26 @@ import java.util.regex.Pattern;
 
 public class ExpressionParser {
     public static class Node {
-        AcvObj acvObj;
+        Pairs pairs;
         Range range;
 
-        public Node(AcvObj acvObj, Range range) {
-            this.acvObj = acvObj;
+        public Node(Pairs pairs, Range range) {
+            this.pairs = pairs;
             this.range = range;
         }
     }
 
     public static Node parseExpression(String input) {
-        Node node = null;
         // 匹配范围和固定值，包括size和value属性，支持负数
         String patternStr = "(-?\\d+)\\s*<=\\s*acv\\[(\\d+)\\]\\[(\\d+)\\]\\[(\\d+)\\]\\.(size|value)\\s*<=\\s*(-?\\d+)|" +
                 "acv\\[(\\d+)\\]\\[(\\d+)\\]\\[(\\d+)\\]\\.(size|value)\\s*==\\s*(-?\\d+)";
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(input);
 
-        while (matcher.find()) {
+        if (matcher.find()) {
             int i, j, k;
             String attribute;
-            Integer lowerBound, upperBound, fixedValue;
+            int lowerBound, upperBound, fixedValue;
 
             if (matcher.group(5) != null) {
                 // Range expression
@@ -48,11 +50,11 @@ public class ExpressionParser {
                 lowerBound = upperBound = fixedValue;
             }
 
-            AcvObj acvObj = new AcvObj(i, j, k);
+            Pairs pairs = new Pairs(i, j, k);
 
             if (attribute.equals("size") || attribute.equals("value")) {
                 Range range = new Range(lowerBound, upperBound);
-                return new Node(acvObj, range);
+                return new Node(pairs, range);
             } else {
                 return null;
             }
@@ -61,7 +63,7 @@ public class ExpressionParser {
     }
 
     public static void main(String[] args) {
-        Map<AcvObj, Range> map = new HashMap<>();
+        Map<Pairs, Range> map = new HashMap<>();
         ArrayList<String> constrains = new ArrayList<>();
         constrains.add("acv[0][0][0].size == 1000");
         constrains.add("0 <= acv[1][0][0].size <= 1000");
@@ -72,7 +74,7 @@ public class ExpressionParser {
         for (String constraint : constrains) {
             Node node = parseExpression(constraint);
             if (node != null) {
-                map.put(node.acvObj, node.range);
+                map.put(node.pairs, node.range);
             } else {
                 // 需要计算的表达式
             }
