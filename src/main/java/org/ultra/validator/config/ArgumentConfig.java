@@ -36,32 +36,17 @@ public class ArgumentConfig {
     private Type type;
     // 数据元素的取值范围
     private Range value = null;
-    // 数据集合大小
+    // 数据集合大小f
     private Range size = null;
     // 针对String做出的适配  字符有哪些字符构成
     private String allowedCharacters = null;
     // 集合是否有序
     private Collation collation = null;
-    // 依赖于哪个参数 要在依赖参数之后进行生成
-    private String dependsOn = null;
-    // TODO 暂时不知道怎么使用
-    //  private Boolean uniqueElements; // 元素是否唯一
-    //   特定值列表
-    //  1 2 -> 1 出现两次
-    // 特定值列表 ? 考虑词频
-    private List<SpecificValue> specificValues = null;
+
 
     // TODO 暂时不知道如何使用
     //    private Structure structure; // 数据结构的特定要求(适配一些常用的数据结构）
-    // 是否合适 ？ 去重 内部使用set去重
-    // TODO 暂时不知道如何使用
-    Boolean distinct = false;
-
     // 链式配置语法
-    public ArgumentConfig withDependsOn(String depends) {
-        this.dependsOn = depends;
-        return this;
-    }
 
     public ArgumentConfig withName(String name) {
         this.name = name;
@@ -88,11 +73,6 @@ public class ArgumentConfig {
         return this;
     }
 
-
-    public ArgumentConfig withSpecificValues(List<SpecificValue> specificValues) {
-        this.specificValues = specificValues;
-        return this;
-    }
 
     public ArgumentConfig withCollation(Collation collation) {
         this.collation = collation;

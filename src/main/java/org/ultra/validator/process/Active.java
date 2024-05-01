@@ -50,6 +50,11 @@ public class Active {
         }
     }
 
+    public void activateValidator(ArgumentsConfig argumentsConfig, Class<?> clazz) {
+        ArgumentsConfig.clazz = clazz;
+        activateValidator(argumentsConfig);
+    }
+
     private boolean verifyArguments(ArgumentsConfig argumentsConfig) throws JsonProcessingException, UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, ScriptException {
         return new org.ultra.validator.process.Validator().verification(argumentsConfig);
     }
