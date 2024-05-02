@@ -7,7 +7,7 @@ import org.ultra.validator.enums.ArgumentTypeEnum;
 import org.ultra.validator.exception.UnableResolveTypeException;
 import org.ultra.validator.factory.BasicTypeFactory;
 import org.ultra.validator.range.Range;
-import org.ultra.validator.common.util.Sort;
+import org.ultra.validator.common.util.SortUtil;
 
 
 import java.lang.reflect.Array;
@@ -99,8 +99,8 @@ public class RandomArgumentConstructor {
 
         if (config.getCollation() != null && config.getCollation().getIsSorted()) {
             // TODO 对数据进行排序 暂时只支持基本数据类型(maybe enough)
-            Sort.sort(arrays[0], config.getCollation().getComparator());
-            Sort.sort(arrays[1], config.getCollation().getComparator());
+            SortUtil.sort(arrays[0], config.getCollation().getComparator());
+            SortUtil.sort(arrays[1], config.getCollation().getComparator());
         }
         return arrays;
     }
@@ -178,7 +178,6 @@ public class RandomArgumentConstructor {
                 }
             } while (count > 0);
         }
-
         return maps;
     }
 }

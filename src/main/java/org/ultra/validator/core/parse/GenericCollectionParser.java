@@ -17,7 +17,7 @@ import static org.ultra.validator.core.parse.Parser.flatteningMap;
  * @description TODO
  * @date 2024/12/30
  **/
-public final class CollectionParser {
+public final class GenericCollectionParser {
     public static void _fromCollection(ArgumentConfig config) throws UnableResolveTypeException, UnknownTypeException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, UnknownTypeException {
         config.setIThCollection(Parser.times[config.getDepth()]++);
         config.setArgumentType(ArgumentTypeEnum.COLLECTION);

@@ -1,4 +1,4 @@
-package org.ultra.validator.main.question.sort;
+package org.ultra.validator.main.question.al.sort;
 
 import org.ultra.validator.annotation.CorrectMethod;
 import org.ultra.validator.annotation.Validator;
@@ -12,26 +12,20 @@ import java.util.List;
 /**
  * @author hcUltra
  * @description
- * @date 2024/5/2 09:59
+ * @date 2024/5/2 10:12
  **/
-public class SelectSort {
+public class InsertSort {
     @ValidatorMethod
-    public static int[] selectSort(int[] array) {
+    public static int[] insertSort(int[] array) {
         if (array == null || array.length < 2) {
             return array;
         }
 
-        for (int i = 0; i < array.length - 1; i++) {
-            int minIdx = i;
-            for (int j = i + 1; j < array.length; j++) {
-                if (array[j] < array[minIdx]) {
-                    minIdx = j;
-                }
+        for (int i = 1; i < array.length; i++) {
+            for (int j = i - 1; j >= 0 && array[j] > array[j + 1]; j--) {
+                swap(array, j, j + 1);
             }
-            swap(array, i, minIdx);
         }
-
-
         return array;
     }
 

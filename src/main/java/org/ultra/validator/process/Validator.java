@@ -13,6 +13,7 @@ import org.ultra.validator.range.Range;
 
 import javax.script.ScriptException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +64,8 @@ public class Validator {
             Object result2 = ReflectUtil.invoke(config.getCorrectMethod(), test[1]);
             correctTakeTime += System.currentTimeMillis() - startCorrectTime;
             if (!DeepEquals.deepEquals(result1, result2)) {
+                System.out.println(Arrays.deepToString(test[0]));
+                System.out.println(Arrays.deepToString(test[1]));
                 log.error("验证第{}次失败", i + 1);
                 return false;
             }

@@ -75,7 +75,7 @@ public class DeepEquals {
         Type type1 = o1.getClass();
         Type type2 = o2.getClass();
         if (BasicParser.isWrapperClass(type1) && BasicParser.isWrapperClass(type2)) {
-            if (!o1.equals(o2) || UnsafeUtil.hashcode(o1) != UnsafeUtil.hashcode(o2)) {
+            if (!o1.equals(o2)) {
                 System.out.println("o1 value" + o1 + "o1 code:" + UnsafeUtil.hashcode(o1));
                 System.out.println("o1 value" + o2 + "o2 code:" + UnsafeUtil.hashcode(o2));
                 return false;
@@ -117,12 +117,6 @@ public class DeepEquals {
         it2 = o2.iterator();
         while (it1.hasNext() && it2.hasNext()) {
             if (!deepEquals(it1.next(), it2.next())) {
-                return false;
-            }
-        }
-
-        for (Object obj : o1) {
-            if (!o2.contains(obj)) {
                 return false;
             }
         }

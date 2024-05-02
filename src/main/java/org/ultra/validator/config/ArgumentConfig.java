@@ -43,6 +43,8 @@ public class ArgumentConfig {
     // 集合是否有序
     private Collation collation = null;
 
+    // TODO 集合的相邻两数不相等（适用于内部是基本类型的集合）
+
 
     // TODO 暂时不知道如何使用
     //    private Structure structure; // 数据结构的特定要求(适配一些常用的数据结构）

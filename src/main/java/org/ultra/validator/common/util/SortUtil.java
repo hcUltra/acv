@@ -9,7 +9,7 @@ import java.util.Comparator;
  * @description 对任意数组，根据比较器 comparator 进行排序
  * @date 2024/4/24 08:03
  **/
-public class Sort {
+public class SortUtil {
     /**
      * TODO 后续再提供一个归并排序 - 稳定排序
      */

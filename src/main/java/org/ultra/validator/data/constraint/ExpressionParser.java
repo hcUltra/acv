@@ -37,7 +37,6 @@ public class ExpressionParser {
                 int lowerBound = Integer.parseInt(matcher.group(1));
                 String expression = matcher.group(2);
                 int upperBound = Integer.parseInt(matcher.group(8));
-
                 // Extracting multiple acv references from the expression
                 Pattern acvPattern = Pattern.compile("(acv(\\d{3})\\.(size|value))");
                 Matcher acvMatcher = acvPattern.matcher(expression);
@@ -90,11 +89,11 @@ public class ExpressionParser {
                 if (constraint.contains("desc")) {
                     // 降序
                     ArgumentConfig argumentConfig = Parser.flatteningMap.get(pairs);
-                    argumentConfig.setCollation(new Collation(true, Comparator.naturalOrder()));
+                    argumentConfig.setCollation(new Collation(true, Comparator.reverseOrder()));
                 } else {
                     // 升序
                     ArgumentConfig argumentConfig = Parser.flatteningMap.get(pairs);
-                    argumentConfig.setCollation(new Collation(true, Comparator.reverseOrder()));
+                    argumentConfig.setCollation(new Collation(true, Comparator.naturalOrder()));
                 }
             } else {
                 Node node = parseExpression(constraint);
@@ -119,25 +118,5 @@ public class ExpressionParser {
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Map<Pairs, Range> map = new HashMap<>();
-        ArrayList<String> constrains = new ArrayList<>();
-        constrains.add("0 <= acv000.size <= 1000");
-        constrains.add("0 <= acv100.size <= 1000");
-        constrains.add("-10000000 <= acv010.value <= 10000000");
-        constrains.add("-10000000 <= acv110.value <= 10000000");
-        constrains.add("1 <= acv000.size + acv100.size <= 2000");
-
-        for (String constraint : constrains) {
-            Node node = parseExpression(constraint);
-            if (node != null) {
-                map.put(node.pairs, node.range);
-            } else {
-                // 需要计算的表达式
-            }
-        }
-        map.forEach((key, value) -> System.out.println(key + ": " + value));
     }
 }

@@ -1,5 +1,4 @@
-
-package org.ultra.validator.main.question.sort;
+package org.ultra.validator.main.question.al.sort;
 
 import org.ultra.validator.annotation.CorrectMethod;
 import org.ultra.validator.annotation.Validator;
@@ -13,22 +12,25 @@ import java.util.List;
 /**
  * @author hcUltra
  * @description
- * @date 2024/5/2 10:09
+ * @date 2024/5/2 09:59
  **/
-public class BubbleSort {
+public class SelectSort {
     @ValidatorMethod
-    public static int[] bubbleSort(int[] array) {
+    public static int[] selectSort(int[] array) {
         if (array == null || array.length < 2) {
             return array;
         }
 
         for (int i = 0; i < array.length - 1; i++) {
-            for (int j = 0; j < array.length - 1 - i; j++) {
-                if (array[j] > array[j + 1]) {
-                    swap(array, j, j + 1);
+            int minIdx = i;
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[j] < array[minIdx]) {
+                    minIdx = j;
                 }
             }
+            swap(array, i, minIdx);
         }
+
 
         return array;
     }

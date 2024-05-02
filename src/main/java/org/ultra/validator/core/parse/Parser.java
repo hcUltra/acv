@@ -20,7 +20,7 @@ public final class Parser {
     // 下标为深度 值为 k
     public static int[] times = new int[8];// 最大深度 8
 
-    public static Map<Pairs,ArgumentConfig> flatteningMap = new HashMap();
+    public static Map<Pairs, ArgumentConfig> flatteningMap = new HashMap();
 
     // 定义原子类自增成员变量
     public static volatile AtomicInteger id = new AtomicInteger(0);
@@ -47,46 +47,51 @@ public final class Parser {
             InstantiationException,
             IllegalAccessException {
         Type type = config.getType();
-        if (type instanceof Class<?>) {
-            if (((Class<?>) type).getComponentType() != null) {
-//            if (((Class<?>) type).isArray()) {
-                // int[]
-                ArrayParser._fromArray(config);
-            } else {
-                // int or Integer  -> leaf
-                if (((Class<?>) type).getName().equals("java.lang.String")) {
-                    // TODO 待解决 ？
-                    BasicParser._fromCollection(config);
-                } else {
-                    BasicParser.createLeafObject(config);
-                }
-            }
-        } else if (type instanceof ParameterizedType) {
-            // List<Integer>
-            Class<?> clazz = Class.forName(((ParameterizedType) type).getRawType().getTypeName());
-            if (Collection.class.isAssignableFrom(clazz)) {
-                // Collection 接口
-                CollectionParser._fromCollection(config);
-            } else if (Map.class.isAssignableFrom(clazz)) {
-                // Map 接口
-                MapParser._fromMap(config);
-            } else {
-                // 自定义泛型集合
-                // 反射 id & value 字段
-            }
-        } else if (type instanceof java.lang.reflect.GenericArrayType) {
-            // List<Integer>[]
-            GenericArrayParser._fromGenericArray(config);
-        } else if (type instanceof TypeVariable<?>) {
-            // List<T>
-            throw new UnableResolveTypeException("TypeVariable");
-        } else if (type instanceof WildcardType) {
-            // List<?>
-            throw new UnableResolveTypeException("WildcardType");
+        if ("org.ultra.validator.common.util.ListNode".equals(type.getTypeName())) {
+            GenericCollectionParser._fromCollection(config);
         } else {
-            // ...
-            throw new UnknownTypeException("UnknownType " + type);
+            if (type instanceof Class<?>) {
+                if (((Class<?>) type).getComponentType() != null) {
+//            if (((Class<?>) type).isArray()) {
+                    // int[]
+                    ArrayParser._fromArray(config);
+                } else {
+                    // int or Integer  -> leaf
+                    if (((Class<?>) type).getName().equals("java.lang.String")) {
+                        // TODO 待解决 ？
+                        BasicParser._fromCollection(config);
+                    } else {
+                        BasicParser.createLeafObject(config);
+                    }
+                }
+            } else if (type instanceof ParameterizedType) {
+                // List<Integer>
+                Class<?> clazz = Class.forName(((ParameterizedType) type).getRawType().getTypeName());
+                if (Collection.class.isAssignableFrom(clazz)) {
+                    // Collection 接口
+                    GenericCollectionParser._fromCollection(config);
+                } else if (Map.class.isAssignableFrom(clazz)) {
+                    // Map 接口
+                    MapParser._fromMap(config);
+                } else {
+                    // 自定义泛型集合
+                    // 反射 id & value 字段
+                }
+            } else if (type instanceof java.lang.reflect.GenericArrayType) {
+                // List<Integer>[]
+                GenericArrayParser._fromGenericArray(config);
+            } else if (type instanceof TypeVariable<?>) {
+                // List<T>
+                throw new UnableResolveTypeException("TypeVariable");
+            } else if (type instanceof WildcardType) {
+                // List<?>
+                throw new UnableResolveTypeException("WildcardType");
+            } else {
+                // ...
+                throw new UnknownTypeException("UnknownType " + type);
+            }
         }
+
     }
 
     /**
