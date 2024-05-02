@@ -1,6 +1,12 @@
 package org.ultra.validator.common.util;
 
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 import org.ultra.validator.annotation.CorrectMethod;
+import org.ultra.validator.annotation.Validator;
 import org.ultra.validator.annotation.ValidatorMethod;
 import org.ultra.validator.config.ArgumentsConfig;
 
@@ -8,6 +14,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * @author yinger
@@ -102,5 +109,25 @@ public class ReflectUtil {
             }
         }
         throw new RuntimeException("No found method annotated with @CorrectMethod found in class " + clazz.getName());
+    }
+
+    public static Class<?> scanValidatorAnnotation(String packageName) {
+        // 配置Reflections
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+                .setUrls(ClasspathHelper.forPackage(packageName))
+                .setScanners(new SubTypesScanner(), new TypeAnnotationsScanner()));
+
+        Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Validator.class);
+
+
+        if (annotatedClasses.size() > 1) {
+            StringBuilder stringBuilder = new StringBuilder();
+            annotatedClasses.forEach((cls) -> {
+                stringBuilder.append(cls.getName()).append(" ");
+            });
+            throw new RuntimeException("Found more than one @Validator annotated" + "\n" + stringBuilder);
+        }
+
+        return annotatedClasses.iterator().next();
     }
 }

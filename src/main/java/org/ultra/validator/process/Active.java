@@ -12,6 +12,7 @@ import org.ultra.validator.exception.UnableResolveTypeException;
 
 import javax.script.ScriptException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 @Slf4j
 public class Active {
@@ -20,23 +21,19 @@ public class Active {
      *
      * @throws IllegalArgumentException 如果 arguments 为 null
      */
-    public void activateValidator(ArgumentsConfig argumentsConfig) {
+    public void activateValidator(List<String> constraints) {
         try {
-            if (argumentsConfig == null) {
-                throw new IllegalArgumentException("ArgumentsConfig is null!");
-            }
+            ArgumentsConfig argumentsConfig = new ArgumentsConfig(constraints);
             // 反射获取 Solution 类 注解的参数
-            Class<?> clazz = ArgumentsConfig.clazz;
+            Class<?> clazz = ArgumentsConfig.clazz = ReflectUtil.scanValidatorAnnotation("org.ultra.validator.main");
             Validator configAnnotation = clazz.getAnnotation(Validator.class);
             argumentsConfig.setTestTimes(configAnnotation.count());
             argumentsConfig.setValidatorMethod(ReflectUtil.reflectValidatorAnnotationMethod());
             argumentsConfig.setCorrectMethod(ReflectUtil.reflectCorretAnnotationMethod());
-            // 收集参数信息 并对其进行扁平化处理 设置模板
+            // 收集参数信息 设置随机化模板 并对其进行扁平化处理
             Parser.preParser(argumentsConfig);
             // 初始化约束
             ExpressionParser.initConstraints(argumentsConfig);
-//            argumentsConfig.getArgumentConfigs().get(0).setCollation(new Collation());
-//            argumentsConfig.getArgumentConfigs().get(1).setCollation(new Collation());
             // 启动验证过程
             boolean result = verifyArguments(argumentsConfig);
             // 记录验证结果日志
@@ -50,10 +47,6 @@ public class Active {
         }
     }
 
-    public void activateValidator(ArgumentsConfig argumentsConfig, Class<?> clazz) {
-        ArgumentsConfig.clazz = clazz;
-        activateValidator(argumentsConfig);
-    }
 
     private boolean verifyArguments(ArgumentsConfig argumentsConfig) throws JsonProcessingException, UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, ScriptException {
         return new org.ultra.validator.process.Validator().verification(argumentsConfig);

@@ -7,6 +7,8 @@ import org.ultra.validator.config.ArgumentsConfig;
 import org.ultra.validator.process.Active;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 请编写对数器测试代码，请遵循一下规则，并且您可以参考如下 leetcode 第一题的对数器代码，
@@ -63,15 +65,14 @@ public class Solution {
     }
 
     public void start() {
-        // leetcode1
         List<String> constrains = new ArrayList<>();
+//        constrains.add("acv000 order desc");
 
         constrains.add("2 <= acv000.size <= 10000");
         constrains.add("-1000000000 <= acv010.value <= 1000000000");
         constrains.add("-1000000000 <= acv100.value <= 1000000000");
 
-        ArgumentsConfig configs = new ArgumentsConfig(constrains);
-        new Active().activateValidator(configs);
+        new Active().activateValidator(constrains);
     }
 
     public static void main(String[] args) {
