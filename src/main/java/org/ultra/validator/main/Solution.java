@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * 5. 请构造测试配置类 ArgumentsConfig 的对象，对于构造规则详见介绍文档
  * 6. 启动测试 new Active().activateValidator(configs);
  **/
-@Validator(count = 1234)
 public class Solution {
     /**
      * 示例：

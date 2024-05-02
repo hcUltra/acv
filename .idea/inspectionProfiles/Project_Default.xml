@@ -3,9 +3,10 @@
     <option name="myName" value="Project Default" />
     <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <Languages>
-        <language minSize="55" name="Java" />
+        <language minSize="79" name="Java" />
       </Languages>
     </inspection_tool>
+    <inspection_tool class="JavaExistingMethodCanBeUsed" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="JavadocDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ADDITIONAL_TAGS" value="description,date" />
     </inspection_tool>
