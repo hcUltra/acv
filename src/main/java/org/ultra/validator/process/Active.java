@@ -2,10 +2,8 @@ package org.ultra.validator.process;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.ultra.validator.annotation.Validator;
 import org.ultra.validator.common.util.ReflectUtil;
 import org.ultra.validator.config.ArgumentsConfig;
-import org.ultra.validator.config.Collation;
 import org.ultra.validator.core.parse.Parser;
 import org.ultra.validator.data.constraint.ExpressionParser;
 import org.ultra.validator.exception.UnableResolveTypeException;
@@ -26,7 +24,7 @@ public class Active {
             ArgumentsConfig argumentsConfig = new ArgumentsConfig(constraints);
             // 反射获取 Solution 类 注解的参数
             Class<?> clazz = ArgumentsConfig.clazz = ReflectUtil.scanValidatorAnnotation("org.ultra.validator.main");
-            Validator configAnnotation = clazz.getAnnotation(Validator.class);
+            org.ultra.validator.annotation.Validator configAnnotation = clazz.getAnnotation(org.ultra.validator.annotation.Validator.class);
             argumentsConfig.setTestTimes(configAnnotation.count());
             argumentsConfig.setValidatorMethod(ReflectUtil.reflectValidatorAnnotationMethod());
             argumentsConfig.setCorrectMethod(ReflectUtil.reflectCorretAnnotationMethod());
@@ -51,4 +49,7 @@ public class Active {
     private boolean verifyArguments(ArgumentsConfig argumentsConfig) throws JsonProcessingException, UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, ScriptException {
         return new org.ultra.validator.process.Validator().verification(argumentsConfig);
     }
+
+
+
 }

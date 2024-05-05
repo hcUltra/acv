@@ -21,7 +21,7 @@ public class BasicTypeFactory {
 
     public BasicTypeFactory(ArgumentConfig config) {
         this.valueRange = config.getValue();
-        this.allowedCharacters = config.getAllowedCharacters();
+        this.allowedCharacters = config.getChars();
     }
 
     // 传入一个字符串，表示基本类型的数据，获取一个基本类型的对象数组，包含两个基本类型的对象

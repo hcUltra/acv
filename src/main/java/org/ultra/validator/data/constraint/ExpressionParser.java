@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ultra.validator.config.ArgumentConfig;
 import org.ultra.validator.config.ArgumentsConfig;
-import org.ultra.validator.config.Collation;
+import org.ultra.validator.config.Order;
 import org.ultra.validator.config.Pairs;
 import org.ultra.validator.core.parse.Parser;
 import org.ultra.validator.range.Range;
@@ -89,11 +89,11 @@ public class ExpressionParser {
                 if (constraint.contains("desc")) {
                     // 降序
                     ArgumentConfig argumentConfig = Parser.flatteningMap.get(pairs);
-                    argumentConfig.setCollation(new Collation(true, Comparator.reverseOrder()));
+                    argumentConfig.setOrder(new Order(true, Comparator.reverseOrder()));
                 } else {
                     // 升序
                     ArgumentConfig argumentConfig = Parser.flatteningMap.get(pairs);
-                    argumentConfig.setCollation(new Collation(true, Comparator.naturalOrder()));
+                    argumentConfig.setOrder(new Order(true, Comparator.naturalOrder()));
                 }
             } else {
                 Node node = parseExpression(constraint);

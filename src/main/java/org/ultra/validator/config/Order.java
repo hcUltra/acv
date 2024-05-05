@@ -10,18 +10,20 @@ import java.util.Comparator;
  * @date 2024/4/24 07:34
  **/
 @Data
-public class Collation {
+public class Order {
     private Boolean isSorted = true;
     // 默认正序
-    private Comparator comparator = Comparator.naturalOrder();
-    public Collation(Boolean isSorted) {
+    private Comparator<?> comparator = Comparator.naturalOrder();
+
+    public Order(Boolean isSorted) {
         this.isSorted = isSorted;
     }
-    public Collation(Boolean isSorted, Comparator comparator) {
+
+    public Order(Boolean isSorted, Comparator<?> comparator) {
         this.isSorted = isSorted;
         this.comparator = comparator;
     }
 
-    public Collation() {
+    public Order() {
     }
 }

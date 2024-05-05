@@ -80,7 +80,7 @@ public class RandomArgumentConstructor {
 
     public static Object[] constructArrayObj(ArgumentConfig config) throws UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         Object[] arrays = new Object[2];
-        int size = config.getFixSize() == -1 ? (int)Range.getNumberMinToMax(config.getSize()) : config.getFixSize();
+        int size = config.getFixSize() == -1 ? (int) Range.getNumberMinToMax(config.getSize()) : config.getFixSize();
         if (size < 0) {
             return null;
         }
@@ -89,25 +89,30 @@ public class RandomArgumentConstructor {
         arrays[0] = Array.newInstance(componentType, size);
         arrays[1] = Array.newInstance(componentType, size);
         int index = 0;
+        // TODO 填充数组前
+
         for (int i = 0; i < size; i++) {
             Object[] objs = constructor(config.getInnerConfig()[0]);
             assert objs != null;
+            // TODO 填充数组时，加约束（比如相邻两数不相等）
             Array.set(arrays[0], index, objs[0]);
             Array.set(arrays[1], index, objs[1]);
             index++;
         }
+        // TODO 填充完毕后
 
-        if (config.getCollation() != null && config.getCollation().getIsSorted()) {
+
+        if (config.getOrder() != null && config.getOrder().getIsSorted()) {
             // TODO 对数据进行排序 暂时只支持基本数据类型(maybe enough)
-            SortUtil.sort(arrays[0], config.getCollation().getComparator());
-            SortUtil.sort(arrays[1], config.getCollation().getComparator());
+            SortUtil.sort(arrays[0], config.getOrder().getComparator());
+            SortUtil.sort(arrays[1], config.getOrder().getComparator());
         }
         return arrays;
     }
 
     public static Object[] constructCollectionObj(ArgumentConfig config) throws UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Object[] collections = new Object[2];
-        int size = config.getFixSize() == -1 ? (int)Range.getNumberMinToMax(config.getSize()) : config.getFixSize();
+        int size = config.getFixSize() == -1 ? (int) Range.getNumberMinToMax(config.getSize()) : config.getFixSize();
         if (size < 0) {
             return null;
         }
@@ -120,19 +125,19 @@ public class RandomArgumentConstructor {
             ((Collection) (collections[1])).add(objs[1]);
         }
 
-        if (config.getCollation() != null && config.getCollation().getIsSorted()) {
+        if (config.getOrder() != null && config.getOrder().getIsSorted()) {
             List list1;
             List list2;
             if (collections[0] instanceof List) {
                 list1 = (List) collections[0];
                 list2 = (List) collections[1];
-                list1.sort(config.getCollation().getComparator());
-                list2.sort(config.getCollation().getComparator());
+                list1.sort(config.getOrder().getComparator());
+                list2.sort(config.getOrder().getComparator());
             } else {
                 list1 = new ArrayList(((Collection) (collections[0])));
                 list2 = new ArrayList(((Collection) (collections[1])));
-                list1.sort(config.getCollation().getComparator());
-                list2.sort(config.getCollation().getComparator());
+                list1.sort(config.getOrder().getComparator());
+                list2.sort(config.getOrder().getComparator());
                 ((Collection) (collections[0])).clear();
                 ((Collection) (collections[1])).clear();
                 ((Collection) (collections[0])).addAll(list1);
@@ -144,7 +149,7 @@ public class RandomArgumentConstructor {
 
     public static Object[] constructMapObj(ArgumentConfig config) throws UnableResolveTypeException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Object[] maps = new Object[2];
-        int size = config.getFixSize() == -1 ? (int)Range.getNumberMinToMax(config.getSize()) : config.getFixSize();
+        int size = config.getFixSize() == -1 ? (int) Range.getNumberMinToMax(config.getSize()) : config.getFixSize();
         if (size < 0) {
             return null;
         }
